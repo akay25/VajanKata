@@ -6,6 +6,7 @@ import MinMaxValueCircle from '~/components/MinMaxValueCircle';
 import CurvedBackground from '~/components/CurvedBackground';
 import BackButton from '~/components/BackButton';
 import WeightScaleHeader from '~/components/WeightScaleScreen/Header';
+import Scale from '~/components/WeightScaleScreen/Scale';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/constants/device';
 import GENERIC_STYLESHEET from '~/styles/generic';
 
@@ -16,7 +17,7 @@ export function WeightScaleScreen() {
     <View style={[GENERIC_STYLESHEET.container, styles.localContainer]}>
       <View style={styles.dataContainer}>
         <WeightScaleHeader />
-        <View style={styles.mainContent}></View>
+        <Scale style={styles.mainContent} />
         <View style={styles.minMaxContainer}>
           <MinMaxValueCircle value={47.2} min={true} />
           <MinMaxValueCircle value={51.3} min={false} />
@@ -50,6 +51,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: DATA_CONTAINER_HEIGHT * 0.6,
     marginTop: 2,
+    borderWidth: 1,
+    padding: 8,
   },
   minMaxContainer: {
     width: '56%',
