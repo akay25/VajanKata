@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   mainContent: {
     width: '100%',
