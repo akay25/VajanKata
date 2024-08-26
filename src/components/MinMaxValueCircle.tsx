@@ -11,8 +11,8 @@ interface MinMaxValueCircleProps {
   min?: boolean;
 }
 
-const INNER_RADIUS_DIFF = 23;
-const PARENT_BUBBLE_SIZE = 80;
+const INNER_RADIUS_DIFF = 20;
+const PARENT_BUBBLE_SIZE = 75;
 const CHILD_BUBBLE_SIZE = PARENT_BUBBLE_SIZE - INNER_RADIUS_DIFF;
 
 const MinMaxValueCircle = (props: MinMaxValueCircleProps) => {
@@ -24,7 +24,11 @@ const MinMaxValueCircle = (props: MinMaxValueCircleProps) => {
           {backgroundColor: props.min ? COLORS.PRIMARY : COLORS.SECONDARY},
         ]}>
         <View style={styles.childContainer}>
-          <Icon name="airplay" />
+          <Icon
+            name={props.min ? 'arrow-down' : 'arrow-up'}
+            color={COLORS.WHITE}
+            size={CHILD_BUBBLE_SIZE * 0.6}
+          />
         </View>
       </View>
       <View style={styles.textContainer}>

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     borderColor: 'purple',
   },
   minMaxContainer: {
-    width: '60%',
+    width: '56%',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
