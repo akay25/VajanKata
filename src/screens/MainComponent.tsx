@@ -6,6 +6,7 @@ import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/constants/device';
 import GENERIC_STYLESHEET from '~/styles/generic';
 import MinMaxValueCircle from '~/components/MinMaxValueCircle';
 import CurvedBackground from '~/components/CurvedBackground';
+import BackButton from '~/components/BackButton';
 
 const DATA_CONTAINER_HEIGHT = DEVICE_HEIGHT * 0.84;
 
@@ -20,7 +21,9 @@ export function WeightScaleScreen() {
           <MinMaxValueCircle value={51.3} min={false} />
         </View>
       </View>
-      <CurvedBackground />
+      <CurvedBackground>
+        <BackButton customStyle={styles.backButtonCustom} />
+      </CurvedBackground>
     </View>
   );
 }
@@ -29,6 +32,11 @@ const styles = StyleSheet.create({
   localContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  backButtonCustom: {
+    position: 'absolute',
+    bottom: 40,
+    left: 40,
   },
   dataContainer: {
     height: DATA_CONTAINER_HEIGHT,

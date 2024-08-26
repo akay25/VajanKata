@@ -4,10 +4,16 @@ import {ImageBackground, StyleSheet} from 'react-native';
 // Local imports
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/constants/device';
 
-const CurvedBackground = () => (
+interface CurvedBackgroundProps {
+  children: React.ReactNode;
+}
+
+const CurvedBackground = (props: CurvedBackgroundProps) => (
   <ImageBackground
     style={styles.curvedArea}
-    source={require('~/assets/images/BlueCurve.png')}></ImageBackground>
+    source={require('~/assets/images/BlueCurve.png')}>
+    {props.children}
+  </ImageBackground>
 );
 
 const styles = StyleSheet.create({
