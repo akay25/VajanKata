@@ -1,7 +1,5 @@
 export default {
-  JOST: 'Jost',
-  heading: 'ComfortaaBold',
-  subHeading: 'ComfortaaMedium',
-  text: 'Jost',
-  complement: 'Jost',
+  heading: 'Ageo-Regular',
+  subHeading: 'LouisGeorge-Regular',
+  label: 'Futura',
 };

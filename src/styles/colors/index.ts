@@ -4,8 +4,8 @@ import * as BASE_COLORS from "./base";
 export default {
   ...BASE_COLORS,
   // Primary colours
-  PRIMARY: '#2B7A4B',
-  SECONDARY: '#0E1B3C',
+  PRIMARY: '#97CFFF',
+  SECONDARY: '#EB97BA',
   // Text headings
   HEADING: '#52665A',
   BODY_DARK: '#738078',
