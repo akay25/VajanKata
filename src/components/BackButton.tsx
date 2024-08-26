@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, ViewStyle} from 'react-native';
 // Local imports
 import COLORS from '~/styles/colors';
 import Icon from './FeatherIcon';
+import {BUTTON} from '~/styles/generic';
 
 interface BackButtonProps {
   customStyle?: ViewStyle;
@@ -22,16 +23,17 @@ const BackButton = (props: BackButtonProps) => {
 const styles = StyleSheet.create({
   backButtonContainer: {
     width: 110,
-    height: 45,
+    height: BUTTON.HEIGHT,
     backgroundColor: COLORS.WHITE,
-    borderRadius: 8,
+    borderRadius: BUTTON.BORDER_RADIUS,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
     justifyContent: 'space-between',
   },
   text: {
-    fontSize: 20,
+    fontSize: BUTTON.FONT_SIZE,
+    fontFamily: BUTTON.FONT_FAMILY,
     color: COLORS.BLACK,
   },
 });
