@@ -9,5 +9,10 @@ module.exports = {
         rootPathSuffix: 'src',
       },
     ],
+    [
+      "@babel/plugin-transform-private-methods", {
+        "loose": true
+      }
+    ]
   ],
 };
