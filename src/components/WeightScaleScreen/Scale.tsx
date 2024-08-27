@@ -24,11 +24,11 @@ interface ScaleProps {
 const WEIGHT_SECTION_HEIGHT = 100;
 const MID_POINT_X = DEVICE_WIDTH / 2 - 8;
 
-const MAX_WEIGHT = 20;
+const MAX_WEIGHT = 200;
 const PARTS_IN_BETWEEN = 10;
 
 let DATA = [];
-for (let i = 0; i <= MAX_WEIGHT; i++) {
+for (let i = 0; i <= MAX_WEIGHT; i += 10) {
   if (i == MAX_WEIGHT) {
     DATA.push({
       key: `${i}.0`,
@@ -124,7 +124,7 @@ const Scale = (props: ScaleProps) => {
             const contentOffsetX = e.nativeEvent.contentOffset.x;
             const offsetAfterMidpoint = contentOffsetX; //  + MID_POINT_X;
             const barCounts = offsetAfterMidpoint / 12.75;
-            let newWeight = barCounts * 0.1;
+            let newWeight = barCounts; // * 0.1;
             // Check for weight
             if (newWeight > MAX_WEIGHT) {
               newWeight = MAX_WEIGHT;
