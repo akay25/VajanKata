@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, SafeAreaView} from 'react-native';
+import {StatusBar, SafeAreaView, ScrollView, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 // import {inject, observer, Provider} from 'mobx-react';
 
@@ -31,7 +31,6 @@ class App extends React.Component<any, any> {
         <StatusBar hidden={true} />
         <NavigationContainer>
           <MainComponent />
-          {/* {UserStore.isLoggedIn ? <Routes /> : <AuthNavigation />} */}
         </NavigationContainer>
         <Toast />
       </SafeAreaView>

@@ -1,48 +1,147 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ViewStyle} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  ViewStyle,
+  FlatList,
+  Vibration,
+  Text,
+} from 'react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import AnimateNumber from 'react-native-animate-number';
-import COLORS from '~/styles/colors';
-import FONTS from '~/styles/fonts';
 
 // Local imports
-import {generateRandomNumber} from '~/utils/helper';
+import COLORS from '~/styles/colors';
+import FONTS from '~/styles/fonts';
+import Bar from './Bar';
+import {DEVICE_WIDTH} from '~/constants/device';
 
 interface ScaleProps {
   style?: ViewStyle;
 }
 
 const WEIGHT_SECTION_HEIGHT = 100;
+const MID_POINT_X = DEVICE_WIDTH / 2 - 8;
+
+const MAX_WEIGHT = 20;
+const PARTS_IN_BETWEEN = 10;
+
+let DATA = [];
+for (let i = 0; i <= MAX_WEIGHT; i++) {
+  if (i == MAX_WEIGHT) {
+    DATA.push({
+      key: `${i}.0`,
+      int: i,
+      dec: 0,
+    });
+  } else {
+    for (let j = 0; j < PARTS_IN_BETWEEN; j++) {
+      DATA.push({
+        key: `${i}.${j}`,
+        int: i,
+        dec: j,
+      });
+    }
+  }
+}
 
 const Scale = (props: ScaleProps) => {
   const [weight, setWeight] = useState(0.0);
-
-  // COmponent mount
-  useEffect(() => {
-    const randomWeight = generateRandomNumber(1, 180);
-    setWeight(randomWeight);
-  }, []);
 
   return (
     <View style={[styles.scaleContainer, props.style]}>
       {/* <Text>{weight}</Text> */}
       <View style={styles.popUpContainer}></View>
       <View style={styles.weightContainer}>
-        <AnimateNumber
+        {/* <AnimateNumber
           style={styles.number}
           value={weight}
+          interval={9}
+          countBy={0.1}
+          timing="easeOut"
           formatter={val => {
             return parseFloat(val).toFixed(1) + ' kgs';
           }}
-        />
+        /> */}
+        <Text style={styles.number}>
+          {parseFloat(weight + '').toFixed(1)} kgs
+        </Text>
       </View>
-      <View style={styles.rulerContainer}></View>
+      <View style={styles.rulerContainer}>
+        <FlatList
+          horizontal={true}
+          scrollEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={styles.ruler}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={45}
+          initialNumToRender={45}
+          getItemLayout={(data, index) => ({
+            length: 15,
+            offset: 15 * index,
+            index,
+          })}
+          data={DATA}
+          ListHeaderComponent={() => {
+            return (
+              <View
+                style={{
+                  width: MID_POINT_X - 4,
+                  height: 1,
+                }}></View>
+            );
+          }}
+          ListFooterComponent={() => {
+            return (
+              <View
+                style={{
+                  width: MID_POINT_X,
+                  height: 1,
+                }}></View>
+            );
+          }}
+          renderItem={({item}) => (
+            <Bar
+              int={item.int}
+              dec={item.dec}
+              isMaxWeight={item.int == MAX_WEIGHT}
+            />
+          )}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          snapToAlignment={'center'}
+          onScroll={e => {
+            const contentOffsetX = e.nativeEvent.contentOffset.x;
+            const offsetAfterMidpoint = contentOffsetX; //  + MID_POINT_X;
+            const barCounts = offsetAfterMidpoint / 12.75;
+            let newWeight = barCounts * 0.1;
+            const weightDiff = Math.abs(newWeight - weight);
+            if (weightDiff >= 0.2) {
+              console.log('Weight changed: ');
+              // Vibration.vibrate(1);
+              ReactNativeHapticFeedback.trigger('impactLight');
+            }
+            if (newWeight > MAX_WEIGHT) {
+              newWeight = MAX_WEIGHT;
+            } else if (newWeight < 0.0) {
+              newWeight = 0.0;
+            }
+            setWeight(newWeight);
+          }}
+          onScrollEndDrag={e => {
+            Vibration.cancel();
+          }}
+        />
+        <View style={styles.marker}></View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   scaleContainer: {
-    borderWidth: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
@@ -62,9 +161,21 @@ const styles = StyleSheet.create({
     letterSpacing: -2.8,
   },
   rulerContainer: {
-    flex: 1,
-    borderWidth: 1,
+    height: 200,
+    flexDirection: 'row',
+  },
+  ruler: {},
+  marker: {
+    height: 100,
+    width: 4,
+    borderWidth: 2,
     borderColor: 'red',
+    backgroundColor: 'red',
+    borderRadius: 2,
+    position: 'absolute',
+    zIndex: 10,
+    right: MID_POINT_X,
+    top: 57,
   },
 });
 
