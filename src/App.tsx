@@ -1,18 +1,8 @@
 import React from 'react';
-import {StatusBar, SafeAreaView, ScrollView, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-// import {inject, observer, Provider} from 'mobx-react';
-
-// import {Routes} from '~/routes/index.routes';
-// import AuthNavigation from '~/routes/AuthNavigation';
+import {StatusBar, SafeAreaView} from 'react-native';
 import Toast from '~/components/Toast';
-// import {userStore} from '~/store';
-
 import MainComponent from '~/screens/MainComponent';
 
-// @ts-ignore
-// @inject('UserStore')
-// @observer
 class App extends React.Component<any, any> {
   // @ts-ignore
   constructor(props) {
@@ -21,28 +11,17 @@ class App extends React.Component<any, any> {
 
   async componentDidMount() {
     // TODO: Add OTA update feature later
-    // await this.props.UserStore.loadTokenFromDevice();
   }
 
   render() {
-    // const {UserStore} = this.props;
     return (
       <SafeAreaView>
         <StatusBar hidden={true} />
-        <NavigationContainer>
-          <MainComponent />
-        </NavigationContainer>
+        <MainComponent />
         <Toast />
       </SafeAreaView>
     );
   }
 }
-
-// const MainApp = () => (
-//   // Mobx Providers
-//   // <Provider UserStore={userStore}>
-//   <App />
-//   // </Provider>
-// );
 
 export default App;
