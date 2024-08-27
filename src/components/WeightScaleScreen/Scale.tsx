@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import AnimateNumber from 'react-native-animate-number';
+import Sound from 'react-native-sound';
 
 // Local imports
 import COLORS from '~/styles/colors';
@@ -19,6 +20,23 @@ import {DEVICE_WIDTH} from '~/constants/device';
 interface ScaleProps {
   style?: ViewStyle;
 }
+
+// Declare it in main index.js file later
+Sound.setCategory('Playback');
+const SPOKE_SOUND = new Sound('spoke.wav', Sound.MAIN_BUNDLE, error => {
+  if (error) {
+    console.log('Failed to load the sound', error);
+    return;
+  }
+  // when loaded successfully
+  console.log(
+    'Duration in seconds: ' +
+      SPOKE_SOUND.getDuration() +
+      'number of channels: ' +
+      SPOKE_SOUND.getNumberOfChannels(),
+  );
+});
+SPOKE_SOUND.setVolume(0.2);
 
 const WEIGHT_SECTION_HEIGHT = 100;
 const MID_POINT_X = DEVICE_WIDTH / 2 - 8;
@@ -47,6 +65,13 @@ for (let i = 0; i <= MAX_WEIGHT; i++) {
 
 const Scale = (props: ScaleProps) => {
   const [weight, setWeight] = useState(0.0);
+
+  useEffect(() => {
+    return () => {
+      SPOKE_SOUND.stop();
+      SPOKE_SOUND.release();
+    };
+  }, []);
 
   return (
     <View style={[styles.scaleContainer, props.style]}>
@@ -117,21 +142,26 @@ const Scale = (props: ScaleProps) => {
             const offsetAfterMidpoint = contentOffsetX; //  + MID_POINT_X;
             const barCounts = offsetAfterMidpoint / 12.75;
             let newWeight = barCounts * 0.1;
-            const weightDiff = Math.abs(newWeight - weight);
-            if (weightDiff >= 0.2) {
-              console.log('Weight changed: ');
-              // Vibration.vibrate(1);
-              ReactNativeHapticFeedback.trigger('impactLight');
-            }
+            // Check for weight
             if (newWeight > MAX_WEIGHT) {
               newWeight = MAX_WEIGHT;
             } else if (newWeight < 0.0) {
               newWeight = 0.0;
             }
+
+            // Find diff to trigger feedback events
+            const weightDiff = Math.abs(newWeight - weight);
+            if (weightDiff >= 0.2) {
+              SPOKE_SOUND.play();
+              ReactNativeHapticFeedback.trigger('impactLight');
+              // Vibration.vibrate(1);
+            }
+
             setWeight(newWeight);
           }}
           onScrollEndDrag={e => {
             Vibration.cancel();
+            SPOKE_SOUND.stop();
           }}
         />
         <View style={styles.marker}></View>
