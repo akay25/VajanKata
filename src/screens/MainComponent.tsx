@@ -24,8 +24,8 @@ export function WeightScaleScreen() {
       </View>
       <CurvedBackground>
         <View style={styles.minMaxContainer}>
-          <MinMaxValueCircle value={47.2} min={true} />
-          <MinMaxValueCircle value={51.3} min={false} />
+          <MinMaxValueCircle value={0} min={true} />
+          <MinMaxValueCircle value={180} min={false} />
         </View>
         <BackButton customStyle={styles.backButtonCustom} />
       </CurvedBackground>

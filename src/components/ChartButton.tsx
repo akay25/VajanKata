@@ -10,7 +10,7 @@ const ChartButton = () => {
   return (
     <View>
       <TouchableOpacity style={styles.chartButton} onPress={() => {}}>
-        <Icon name="pie-chart" color={COLORS.WHITE} size={22} />
+        <Icon name="settings" color={COLORS.WHITE} size={22} />
       </TouchableOpacity>
     </View>
   );

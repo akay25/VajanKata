@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, ViewStyle} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 
 // Local imports
 import COLORS from '~/styles/colors';
@@ -12,11 +19,18 @@ interface BackButtonProps {
 
 const BackButton = (props: BackButtonProps) => {
   // TODO: Add method to go back later
+
+  const exitApp = () => {
+    BackHandler.exitApp();
+  };
+
   return (
-    <View style={[styles.backButtonContainer, props.customStyle]}>
+    <TouchableOpacity
+      style={[styles.backButtonContainer, props.customStyle]}
+      onPress={exitApp}>
       <Icon name="chevrons-left" size={20} color={COLORS.BLACK} />
       <Text style={styles.text}>Back</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
