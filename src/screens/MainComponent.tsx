@@ -9,6 +9,7 @@ import WeightScaleHeader from '~/components/WeightScaleScreen/Header';
 import Scale from '~/components/WeightScaleScreen/Scale';
 import COLORS from '~/styles/colors';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/constants/device';
+import {BUTTON} from '~/styles/generic';
 
 const DATA_CONTAINER_HEIGHT = DEVICE_HEIGHT * 0.84;
 
@@ -20,12 +21,12 @@ export function WeightScaleScreen() {
         <View style={styles.mainContent}>
           <Scale />
         </View>
+      </View>
+      <CurvedBackground>
         <View style={styles.minMaxContainer}>
           <MinMaxValueCircle value={47.2} min={true} />
           <MinMaxValueCircle value={51.3} min={false} />
         </View>
-      </View>
-      <CurvedBackground>
         <BackButton customStyle={styles.backButtonCustom} />
       </CurvedBackground>
     </View>
@@ -60,10 +61,10 @@ const styles = StyleSheet.create({
   },
   minMaxContainer: {
     width: '56%',
-    flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    bottom: 0,
+    flexDirection: 'row',
+    alignSelf: 'center',
+    top: -BUTTON.HEIGHT,
   },
 });
 

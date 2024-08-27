@@ -44,7 +44,7 @@ const MinMaxValueCircle = (props: MinMaxValueCircleProps) => {
 const styles = StyleSheet.create({
   boxContainer: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   parentContainer: {
@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginTop: 20,
-    flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   numberContainer: {

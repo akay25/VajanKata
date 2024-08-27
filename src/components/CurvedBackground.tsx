@@ -21,8 +21,9 @@ const styles = StyleSheet.create({
     height: DEVICE_HEIGHT * 0.3,
     width: DEVICE_WIDTH,
     position: 'absolute',
-    bottom: -DEVICE_HEIGHT,
-    zIndex: -10,
+    left: 0,
+    top: DEVICE_HEIGHT - DEVICE_HEIGHT * 0.3,
+    zIndex: 0,
   },
 });
 
