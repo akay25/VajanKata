@@ -9,34 +9,17 @@ import {
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import AnimateNumber from 'react-native-animate-number';
-import Sound from 'react-native-sound';
 
 // Local imports
 import COLORS from '~/styles/colors';
 import FONTS from '~/styles/fonts';
 import Bar from './Bar';
 import {DEVICE_WIDTH} from '~/constants/device';
+import {SPOKE_SOUND} from '~/sounds';
 
 interface ScaleProps {
   style?: ViewStyle;
 }
-
-// Declare it in main index.js file later
-Sound.setCategory('Playback');
-const SPOKE_SOUND = new Sound('spoke.wav', Sound.MAIN_BUNDLE, error => {
-  if (error) {
-    console.log('Failed to load the sound', error);
-    return;
-  }
-  // when loaded successfully
-  console.log(
-    'Duration in seconds: ' +
-      SPOKE_SOUND.getDuration() +
-      'number of channels: ' +
-      SPOKE_SOUND.getNumberOfChannels(),
-  );
-});
-SPOKE_SOUND.setVolume(0.2);
 
 const WEIGHT_SECTION_HEIGHT = 100;
 const MID_POINT_X = DEVICE_WIDTH / 2 - 8;
