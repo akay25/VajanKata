@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
 
 // Local imports
 import ChartButton from '~/components/ChartButton';
@@ -10,7 +10,11 @@ import fonts from '~/styles/fonts';
 const DATA_CONTAINER_HEIGHT = DEVICE_HEIGHT * 0.84;
 
 const WeightScaleHeader = () => {
-  const selectedValue = 'kg';
+  const [isKg, setIsKg] = useState(true);
+
+  const toggleUnit = val => {
+    setIsKg(val);
+  };
 
   return (
     <View style={styles.headerMenuContainer}>
@@ -25,26 +29,26 @@ const WeightScaleHeader = () => {
           </Text>
         </View>
         <View style={styles.rightHeading}>
-          <TouchableHighlight>
+          <TouchableWithoutFeedback onPress={() => toggleUnit(true)}>
             <Text
               style={[
                 styles.labelHeadingText,
                 styles.rightHeadingText,
-                {borderBottomWidth: selectedValue == 'kg' ? 0.7 : 0},
+                {borderBottomWidth: isKg ? 0.7 : 0},
               ]}>
               kg
             </Text>
-          </TouchableHighlight>
-          <TouchableHighlight>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => toggleUnit(false)}>
             <Text
               style={[
                 styles.labelHeadingText,
                 styles.rightHeadingText,
-                {borderBottomWidth: selectedValue == 'lb' ? 0.7 : 0},
+                {borderBottomWidth: !isKg ? 0.7 : 0},
               ]}>
               lb
             </Text>
-          </TouchableHighlight>
+          </TouchableWithoutFeedback>
         </View>
       </View>
     </View>
@@ -84,6 +88,7 @@ const styles = StyleSheet.create({
     maxWidth: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginRight: 3,
   },
   rightHeadingText: {
     height: 30,
