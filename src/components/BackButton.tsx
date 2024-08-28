@@ -18,8 +18,6 @@ interface BackButtonProps {
 }
 
 const BackButton = (props: BackButtonProps) => {
-  // TODO: Add method to go back later
-
   const exitApp = () => {
     BackHandler.exitApp();
   };

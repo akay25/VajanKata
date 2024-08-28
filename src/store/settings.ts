@@ -36,7 +36,12 @@ export const SettingsStoreModel = types
     setWeightInG(value: number) {
       self.weight_in_g = value;
 
-      // TODO: Check of min and max weight before moving forward
+      // Check of min and max weight before moving forward
+      if (value > self.max_weight_in_g) {
+        self.max_weight_in_g = value;
+      } else if (value < self.min_weight_in_g) {
+        self.min_weight_in_g = value;
+      }
     },
   }))
   .views(self => ({
