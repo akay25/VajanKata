@@ -10,6 +10,7 @@ import { getWeightInKgs, getWeightInPounds, getRoundUpValue } from "~/utils/help
 
 export const SettingsStoreModel = types
   .model({
+    // height_in_cms: types.number,
     weight_in_g: types.number,
     display_weight_in_kg: types.boolean,
     display_insults: types.boolean,
@@ -19,6 +20,7 @@ export const SettingsStoreModel = types
   })
   .actions(self => ({
     init(newSettings: any) {
+      // self.height_in_cms = 172.00; // TODO: Change it later when adding new settings 
       self.weight_in_g = newSettings.weight_in_g;
       self.display_weight_in_kg = newSettings.display_weight_in_kg;
     },
@@ -43,6 +45,12 @@ export const SettingsStoreModel = types
         self.min_weight_in_g = value;
       }
     },
+    calculateBMI() {
+      const heightInCMS = 1.72;
+      const bmiValue = (self.weight_in_g / 1000) / (heightInCMS * heightInCMS);
+
+      return parseFloat(bmiValue.toFixed(2));
+    }
   }))
   .views(self => ({
     get weight() {

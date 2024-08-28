@@ -6,9 +6,9 @@ import {
   FlatList,
   Vibration,
   Text,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import AnimateNumber from 'react-native-animate-number';
 import {observer, inject} from 'mobx-react';
 
 // Local imports
@@ -19,6 +19,7 @@ import {DEVICE_WIDTH} from '~/constants/device';
 import {MAX_WEIGHT, WEIGHT_DATA} from '~/constants/scale';
 import {SPOKE_SOUND} from '~/sounds';
 import {SettingsStoreProps} from '~/@types/SettingsStoreProps';
+import {INSULTS} from '~/constants/insults';
 
 interface ScaleProps extends SettingsStoreProps {
   style?: ViewStyle;
@@ -31,6 +32,7 @@ const Scale = inject('SettingsStore')(
   observer((props: ScaleProps) => {
     const {SettingsStore} = props;
     const [weight, setWeight] = useState(0.0);
+    const [insult, setInsult] = useState('Swipe and tap on weight');
     // TODO: Use this value to display a different scale
     const showKGScale = SettingsStore.display_weight_in_kg;
 
@@ -41,12 +43,33 @@ const Scale = inject('SettingsStore')(
       };
     }, []);
 
+    const calculateInsult = () => {
+      const bmi = SettingsStore.calculateBMI();
+      let insultsList = [];
+      if (bmi <= 19) {
+        // Select from LOW
+        insultsList = INSULTS['LOW'];
+      } else if (bmi > 20 && bmi <= 26) {
+        // Select from MID
+        insultsList = INSULTS['MID'];
+      } else if (bmi > 26) {
+        // Select from HIGH
+        insultsList = INSULTS['HIGH'];
+      }
+
+      // Select one randomly
+      const randomIndex = Math.floor(Math.random() * insultsList.length);
+      setInsult(insultsList[randomIndex]);
+    };
+
     return (
       <View style={[styles.scaleContainer, props.style]}>
-        {/* <Text>{weight}</Text> */}
-        <View style={styles.popUpContainer}></View>
-        <View style={styles.weightContainer}>
-          {/* <AnimateNumber
+        <View style={styles.promptContainer}>
+          <Text style={styles.promptText}>{insult}</Text>
+        </View>
+        <TouchableWithoutFeedback onPress={() => calculateInsult()}>
+          <View style={styles.weightContainer}>
+            {/* <AnimateNumber
           style={styles.number}
           value={weight}
           interval={9}
@@ -56,10 +79,11 @@ const Scale = inject('SettingsStore')(
             return parseFloat(val).toFixed(1) + ' kgs';
           }}
         /> */}
-          <Text style={styles.number}>
-            {SettingsStore.weight} {SettingsStore.unit}
-          </Text>
-        </View>
+            <Text style={styles.number}>
+              {SettingsStore.weight} {SettingsStore.unit}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
         <View style={styles.rulerContainer}>
           <FlatList
             horizontal={true}
@@ -124,7 +148,7 @@ const Scale = inject('SettingsStore')(
                 ReactNativeHapticFeedback.trigger('impactLight');
                 // Vibration.vibrate(1);
               }
-              setWeight(weight);
+              setWeight(newWeight);
               SettingsStore.setWeightInG(newWeight * 1000);
             }}
             onScrollEndDrag={e => {
@@ -144,9 +168,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-  popUpContainer: {
+  promptContainer: {
     height: WEIGHT_SECTION_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
+  },
+  promptText: {
+    fontSize: 24,
+    fontFamily: FONTS.subHeading,
+    color: COLORS.DARK_GRAY,
   },
   weightContainer: {
     height: WEIGHT_SECTION_HEIGHT,

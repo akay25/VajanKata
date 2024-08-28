@@ -1,0 +1,38 @@
+export const INSULTS = {
+  "LOW": [
+    "Did you forget to eat, or are you just practicing for hide-and-seek?",
+    "You’ve got more bones than a skeleton convention!",
+    "Blink, and you might disappear!",
+    "Bro, are you on a diet or a hunger strike?",
+    "You’re so light, a gust of wind might just carry you away!",
+    "If you were any skinnier, you’d be a 2D character!",
+    "Even your shadow is trying to gain weight!",
+    "I’ve seen more meat on a toothpick!",
+    "You must be on that air-and-sunlight diet!",
+    "At least you won’t break the scale… or even register on it!",
+  ],
+  "MID": [
+    "You’re like Goldilocks—just the right amount of thicc!",
+    "Walking the fine line between snack and full-course meal!",
+    "Thicc enough to turn heads, slim enough to keep them!",
+    "You’re what happens when comfy meets curvy!",
+    "Not too much, not too little, you’re just right, fam!",
+    "Thicc with purpose, keeping it balanced!",
+    "You’ve got that perfect blend of thicc and fit!",
+    "You’re rocking that healthy thiccness!",
+    "Thicc, but still got the moves like Jagger!",
+    "Just the right amount of cushion for the pushin’!",
+  ],
+  "HIGH": [
+    "Bruh, did you eat the gym?",
+    "Looks like the only thing you’re lifting is donuts!",
+    "You’re not just thick, you’re thicc with a double ‘c’!",
+    "Even your shadow’s trying to slim down!",
+    "Are those abs or did you just swallow a basketball?",
+    "Time to turn those love handles into trophy handles!",
+    "You’ve got more rolls than a bakery, fam!",
+    "Not even gravity can hold you back… literally!",
+    "You must be allergic to cardio, huh?",
+    "Your scale just filed for retirement!",
+  ]
+}
