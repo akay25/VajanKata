@@ -35,7 +35,14 @@ export const SettingsStoreModel = types
   .views(self => ({
     get weight() {
       if (self.display_weight_in_kg)
+        // Return weight in kg  
         return self.weight_in_g / 1000.0;
-      return 0.0;
+
+      // Return weight in pounds
+      // TODO: Save this constant somewhere
+      return self.weight_in_g * 0.00220462;
     },
+    get unit() {
+      return self.display_weight_in_kg ? "kgs" : "lbs";
+    }
   }));
