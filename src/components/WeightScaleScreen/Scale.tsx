@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -30,6 +30,9 @@ const WEIGHT_SECTION_HEIGHT = 100;
 
 const Scale = inject('SettingsStore')(
   observer((props: ScaleProps) => {
+    // Set interval
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
     const {SettingsStore} = props;
     const [weight, setWeight] = useState(0.0);
     const [insult, setInsult] = useState('Swipe and tap on weight');
@@ -147,6 +150,16 @@ const Scale = inject('SettingsStore')(
                 SPOKE_SOUND.play();
                 ReactNativeHapticFeedback.trigger('impactLight');
                 // Vibration.vibrate(1);
+
+                // Clear interval
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                }
+
+                // Set new interval
+                intervalRef.current = setTimeout(() => {
+                  calculateInsult();
+                }, 600);
               }
               setWeight(newWeight);
               SettingsStore.setWeightInG(newWeight * 1000);
@@ -175,6 +188,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   promptText: {
+    textAlign: 'center',
     fontSize: 24,
     fontFamily: FONTS.subHeading,
     color: COLORS.DARK_GRAY,
