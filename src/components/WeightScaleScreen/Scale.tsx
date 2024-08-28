@@ -78,8 +78,7 @@ const Scale = inject('SettingsStore')(
           }}
         /> */}
           <Text style={styles.number}>
-            {parseFloat(SettingsStore.weight + '').toFixed(1)}{' '}
-            {SettingsStore.unit}
+            {SettingsStore.weight} {SettingsStore.unit}
           </Text>
         </View>
         <View style={styles.rulerContainer}>

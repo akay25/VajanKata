@@ -36,8 +36,8 @@ class WeightScaleScreen extends React.Component<any, any> {
         </View>
         <CurvedBackground>
           <View style={styles.minMaxContainer}>
-            <MinMaxValueCircle value={0} min={true} />
-            <MinMaxValueCircle value={180} min={false} />
+            <MinMaxValueCircle value={SettingsStore.min_weight} min={true} />
+            <MinMaxValueCircle value={SettingsStore.max_weight} min={false} />
           </View>
           <BackButton customStyle={styles.backButtonCustom} />
         </CurvedBackground>
