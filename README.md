@@ -41,3 +41,7 @@ npm run ios
 # OR using Yarn
 yarn ios
 ```
+
+
+## App demo
+![App demo](https://raw.githubusercontent.com/akay25/VajanKata/master/demo/app-recording.gif)
