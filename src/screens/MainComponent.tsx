@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {observer, inject} from 'mobx-react';
 
 // Local imports
 import MinMaxValueCircle from '~/components/MinMaxValueCircle';
@@ -13,24 +14,36 @@ import {BUTTON} from '~/styles/generic';
 
 const DATA_CONTAINER_HEIGHT = DEVICE_HEIGHT * 0.84;
 
-export function WeightScaleScreen() {
-  return (
-    <View style={styles.localContainer}>
-      <View style={styles.dataContainer}>
-        <WeightScaleHeader />
-        <View style={styles.mainContent}>
-          <Scale />
+// @ts-ignore
+@inject('SettingsStore')
+@observer
+class WeightScaleScreen extends React.Component<any, any> {
+  // @ts-ignore
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const {SettingsStore} = this.props;
+    console.log('settings ', SettingsStore);
+    return (
+      <View style={styles.localContainer}>
+        <View style={styles.dataContainer}>
+          <WeightScaleHeader />
+          <View style={styles.mainContent}>
+            <Scale />
+          </View>
         </View>
+        <CurvedBackground>
+          <View style={styles.minMaxContainer}>
+            <MinMaxValueCircle value={0} min={true} />
+            <MinMaxValueCircle value={180} min={false} />
+          </View>
+          <BackButton customStyle={styles.backButtonCustom} />
+        </CurvedBackground>
       </View>
-      <CurvedBackground>
-        <View style={styles.minMaxContainer}>
-          <MinMaxValueCircle value={0} min={true} />
-          <MinMaxValueCircle value={180} min={false} />
-        </View>
-        <BackButton customStyle={styles.backButtonCustom} />
-      </CurvedBackground>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({

@@ -1,59 +1,67 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
+import {observer, inject} from 'mobx-react';
 
 // Local imports
 import ChartButton from '~/components/ChartButton';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '~/constants/device';
 import COLORS from '~/styles/colors';
 import fonts from '~/styles/fonts';
+import {SettingsStoreProps} from '~/@types/SettingsStoreProps';
 
 const DATA_CONTAINER_HEIGHT = DEVICE_HEIGHT * 0.84;
 
-const WeightScaleHeader = () => {
-  const [isKg, setIsKg] = useState(true);
+const WeightScaleHeader = inject('SettingsStore')(
+  observer((props: SettingsStoreProps) => {
+    const {SettingsStore} = props;
+    const [isKg, setIsKg] = useState(SettingsStore.display_weight_in_kg);
 
-  const toggleUnit = val => {
-    setIsKg(val);
-  };
+    const toggleUnit = val => {
+      setIsKg(val);
+      SettingsStore.toggleUnit(val);
+    };
 
-  return (
-    <View style={styles.headerMenuContainer}>
-      <View style={styles.menuButtonContainer}>
-        <ChartButton />
-      </View>
-      <View style={styles.labelHeadings}>
-        <View style={styles.leftHeadings}>
-          <Text style={styles.labelHeadingText}>Statistics · </Text>
-          <Text style={[styles.labelHeadingText, {fontWeight: 'bold'}]}>
-            Weight
-          </Text>
+    return (
+      <View style={styles.headerMenuContainer}>
+        <View style={styles.menuButtonContainer}>
+          <ChartButton />
         </View>
-        <View style={styles.rightHeading}>
-          <TouchableWithoutFeedback onPress={() => toggleUnit(true)}>
-            <Text
-              style={[
-                styles.labelHeadingText,
-                styles.rightHeadingText,
-                {borderBottomWidth: isKg ? 0.7 : 0},
-              ]}>
-              kg
+        <View style={styles.labelHeadings}>
+          <View style={styles.leftHeadings}>
+            <Text style={styles.labelHeadingText}>Statistics · </Text>
+            <Text style={[styles.labelHeadingText, {fontWeight: 'bold'}]}>
+              Weight
             </Text>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => toggleUnit(false)}>
-            <Text
-              style={[
-                styles.labelHeadingText,
-                styles.rightHeadingText,
-                {borderBottomWidth: !isKg ? 0.7 : 0},
-              ]}>
-              lb
-            </Text>
-          </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.rightHeading}>
+            <TouchableWithoutFeedback
+              style={{borderWidth: 1, borderColor: 'red'}}
+              onPress={() => toggleUnit(true)}>
+              <Text
+                style={[
+                  styles.labelHeadingText,
+                  styles.rightHeadingText,
+                  {borderBottomWidth: isKg ? 0.7 : 0},
+                ]}>
+                kg
+              </Text>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => toggleUnit(false)}>
+              <Text
+                style={[
+                  styles.labelHeadingText,
+                  styles.rightHeadingText,
+                  {borderBottomWidth: !isKg ? 0.7 : 0},
+                ]}>
+                lb
+              </Text>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       </View>
-    </View>
-  );
-};
+    );
+  }),
+);
 
 const styles = StyleSheet.create({
   headerMenuContainer: {

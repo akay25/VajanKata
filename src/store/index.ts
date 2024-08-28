@@ -1,6 +1,6 @@
-import { UserStoreModel } from './user';
-import { DEFAULT_USER } from '~/constants/user';
+import { SettingsStoreModel } from './settings';
+import { DEFAULT_SETTINGS } from '~/constants/settings';
 import { onSnapshot, onPatch } from 'mobx-state-tree';
 
 // Create new stores here
-export const userStore = UserStoreModel.create(DEFAULT_USER);
+export const settingsStore = SettingsStoreModel.create(DEFAULT_SETTINGS);
