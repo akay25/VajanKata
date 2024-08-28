@@ -25,7 +25,6 @@ class WeightScaleScreen extends React.Component<any, any> {
 
   render() {
     const {SettingsStore} = this.props;
-    console.log('settings ', SettingsStore);
     return (
       <View style={styles.localContainer}>
         <View style={styles.dataContainer}>

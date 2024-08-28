@@ -16,6 +16,7 @@ import COLORS from '~/styles/colors';
 import FONTS from '~/styles/fonts';
 import Bar from './Bar';
 import {DEVICE_WIDTH} from '~/constants/device';
+import {MAX_WEIGHT, WEIGHT_DATA} from '~/constants/scale';
 import {SPOKE_SOUND} from '~/sounds';
 import {SettingsStoreProps} from '~/@types/SettingsStoreProps';
 
@@ -23,30 +24,8 @@ interface ScaleProps extends SettingsStoreProps {
   style?: ViewStyle;
 }
 
-const WEIGHT_SECTION_HEIGHT = 100;
 const MID_POINT_X = DEVICE_WIDTH / 2 - 8;
-
-const MAX_WEIGHT = 200;
-const PARTS_IN_BETWEEN = 10;
-
-let DATA = [];
-for (let i = 0; i <= MAX_WEIGHT; i += 10) {
-  if (i == MAX_WEIGHT) {
-    DATA.push({
-      key: `${i}.0`,
-      int: i,
-      dec: 0,
-    });
-  } else {
-    for (let j = 0; j < PARTS_IN_BETWEEN; j++) {
-      DATA.push({
-        key: `${i}.${j}`,
-        int: i,
-        dec: j,
-      });
-    }
-  }
-}
+const WEIGHT_SECTION_HEIGHT = 100;
 
 const Scale = inject('SettingsStore')(
   observer((props: ScaleProps) => {
@@ -96,7 +75,7 @@ const Scale = inject('SettingsStore')(
               offset: 15 * index,
               index,
             })}
-            data={DATA}
+            data={WEIGHT_DATA}
             ListHeaderComponent={() => {
               return (
                 <View
@@ -145,7 +124,7 @@ const Scale = inject('SettingsStore')(
                 ReactNativeHapticFeedback.trigger('impactLight');
                 // Vibration.vibrate(1);
               }
-
+              setWeight(weight);
               SettingsStore.setWeightInG(newWeight * 1000);
             }}
             onScrollEndDrag={e => {

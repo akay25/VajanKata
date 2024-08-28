@@ -56,3 +56,15 @@ export const ExitAlert = (title: string, msg: string) => {
     ]
   );
 }
+
+export const getWeightInKgs = (weight_in_g: number) => {
+  return weight_in_g / 1000.0;
+}
+
+export const getWeightInPounds = (weight_in_g: number) => {
+  return weight_in_g * 0.00220462;
+}
+
+export const getRoundUpValue = (weight: number) => {
+  return parseFloat(weight + '').toFixed(1);
+}

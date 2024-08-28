@@ -1,20 +1,12 @@
-import { types, flow } from "mobx-state-tree";
-import { G } from "react-native-svg";
+import { types, } from "mobx-state-tree";
+
+// Local values
+import storage from "~/utils/mmkv-storage";
 import MMKV_KEYS from "~/constants/mmkv-keys";
 import { DEFAULT_SETTINGS } from "~/constants/settings";
-import storage from "~/utils/mmkv-storage";
+import { getWeightInKgs, getWeightInPounds, getRoundUpValue } from "~/utils/helper";
 
-const getWeightInKgs = (weight_in_g: number) => {
-  return weight_in_g / 1000.0;
-}
 
-const getWeightInPounds = (weight_in_g: number) => {
-  return weight_in_g * 0.00220462;
-}
-
-const getRoundUpValue = (weight: number) => {
-  return parseFloat(weight + '').toFixed(1);
-}
 
 export const SettingsStoreModel = types
   .model({
