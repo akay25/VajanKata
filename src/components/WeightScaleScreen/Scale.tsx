@@ -18,6 +18,7 @@ import Bar from './Bar';
 import {DEVICE_WIDTH} from '~/constants/device';
 import {MAX_WEIGHT, WEIGHT_DATA} from '~/constants/scale';
 import {SPOKE_SOUND} from '~/sounds';
+import StartScanText from '~/components/StartScanText';
 import {SettingsStoreProps} from '~/@types/SettingsStoreProps';
 import {INSULTS} from '~/constants/insults';
 
@@ -32,10 +33,11 @@ const Scale = inject('SettingsStore')(
   observer((props: ScaleProps) => {
     // Set interval
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const flatlistRef = useRef< FlatList | null>(null);
 
     const {SettingsStore} = props;
     const [weight, setWeight] = useState(0.0);
-    const [insult, setInsult] = useState('Swipe and tap on weight');
+    const [insult, setInsult] = useState('Stand on weight machine and tap here');
     // TODO: Use this value to display a different scale
     const showKGScale = SettingsStore.display_weight_in_kg;
 
@@ -45,6 +47,38 @@ const Scale = inject('SettingsStore')(
         SPOKE_SOUND.release();
       };
     }, []);
+
+    useEffect(() => {
+      // Scroll the scale tip
+      let newWeight = SettingsStore.weight; 
+      // Check for weight
+      if (newWeight > MAX_WEIGHT) {
+        newWeight = MAX_WEIGHT;
+      } else if (newWeight < 0.0) {
+        newWeight = 0.0;
+      }
+      setWeight(newWeight);
+
+      // Find diff to trigger feedback events
+      const weightDiff = Math.abs(newWeight - weight);
+      if (weightDiff >= 0.2) {
+        SPOKE_SOUND.play();
+        ReactNativeHapticFeedback.trigger('impactLight');
+
+        // Clear interval
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+
+        // Calculate content offset
+        const contentOffsetX = newWeight * 12.75;
+        if(contentOffsetX >= 0){
+          console.log("Need to scroll to: ", contentOffsetX);
+          flatlistRef.current.scrollToOffset({animated: true, offset:contentOffsetX});
+        }
+        calculateInsult();
+      }
+    }, [SettingsStore.weight_in_g])
 
     const calculateInsult = () => {
       const bmi = SettingsStore.calculateBMI();
@@ -68,20 +102,11 @@ const Scale = inject('SettingsStore')(
     return (
       <View style={[styles.scaleContainer, props.style]}>
         <View style={styles.promptContainer}>
-          <Text style={styles.promptText}>{insult}</Text>
+          <StartScanText showSelf={weight == 0} />
+          {weight > 0 && <Text style={styles.promptText}>{insult}</Text>}
         </View>
         <TouchableWithoutFeedback onPress={() => calculateInsult()}>
           <View style={styles.weightContainer}>
-            {/* <AnimateNumber
-          style={styles.number}
-          value={weight}
-          interval={9}
-          countBy={0.1}
-          timing="easeOut"
-          formatter={val => {
-            return parseFloat(val).toFixed(1) + ' kgs';
-          }}
-        /> */}
             <Text style={styles.number}>
               {SettingsStore.weight} {SettingsStore.unit}
             </Text>
@@ -89,6 +114,7 @@ const Scale = inject('SettingsStore')(
         </TouchableWithoutFeedback>
         <View style={styles.rulerContainer}>
           <FlatList
+            ref={flatlistRef}
             horizontal={true}
             scrollEnabled={true}
             showsHorizontalScrollIndicator={false}
@@ -132,38 +158,6 @@ const Scale = inject('SettingsStore')(
               flexGrow: 1,
             }}
             snapToAlignment={'center'}
-            onScroll={e => {
-              const contentOffsetX = e.nativeEvent.contentOffset.x;
-              const offsetAfterMidpoint = contentOffsetX; //  + MID_POINT_X;
-              const barCounts = offsetAfterMidpoint / 12.75;
-              let newWeight = barCounts; // * 0.1;
-              // Check for weight
-              if (newWeight > MAX_WEIGHT) {
-                newWeight = MAX_WEIGHT;
-              } else if (newWeight < 0.0) {
-                newWeight = 0.0;
-              }
-
-              // Find diff to trigger feedback events
-              const weightDiff = Math.abs(newWeight - weight);
-              if (weightDiff >= 0.2) {
-                SPOKE_SOUND.play();
-                ReactNativeHapticFeedback.trigger('impactLight');
-                // Vibration.vibrate(1);
-
-                // Clear interval
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                }
-
-                // Set new interval
-                intervalRef.current = setTimeout(() => {
-                  calculateInsult();
-                }, 600);
-              }
-              setWeight(newWeight);
-              SettingsStore.setWeightInG(newWeight * 1000);
-            }}
             onScrollEndDrag={e => {
               Vibration.cancel();
               SPOKE_SOUND.stop();
